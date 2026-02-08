@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 const Legal = () => {
@@ -15,6 +16,11 @@ const Legal = () => {
 
     return (
         <div className="py-20 bg-white dark:bg-slate-950 transition-colors duration-300 min-h-screen">
+            <Helmet>
+                <title>Legal & Privacy Policy | CHANGE Foundation</title>
+                <meta name="description" content="Review our Terms of Use, Privacy Policy, and Governance structure. We are committed to transparency and compliance as a Section 8 Non-Profit." />
+                <link rel="canonical" href="https://www.changefoundation.in/legal" />
+            </Helmet>
             <div className="container mx-auto px-4 max-w-4xl">
                 <header className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">Legal & Governance</h1>

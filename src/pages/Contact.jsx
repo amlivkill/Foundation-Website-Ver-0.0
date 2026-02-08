@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import { legalData } from '../lib/constants';
+import { supabase } from '../lib/supabase';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -20,22 +22,39 @@ const Contact = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitStatus(null);
 
-        // Simulate form submission
-        setTimeout(() => {
-            console.log('Form submitted:', formData);
+        try {
+            const { error } = await supabase
+                .from('contacts')
+                .insert([formData]);
+
+            if (error) {
+                console.error('Supabase error:', error);
+                setSubmitStatus('error');
+            } else {
+                setSubmitStatus('success');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                setTimeout(() => setSubmitStatus(null), 5000);
+            }
+        } catch (err) {
+            console.error('Submit failed:', err);
+            setSubmitStatus('error');
+        } finally {
             setIsSubmitting(false);
-            setSubmitStatus('success');
-            setFormData({ name: '', email: '', subject: '', message: '' });
-            setTimeout(() => setSubmitStatus(null), 5000);
-        }, 1500);
+        }
     };
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <Helmet>
+                <title>Contact Us | CHANGE Foundation</title>
+                <meta name="description" content="Get in touch with CHANGE Foundation. Visit our registered office in Tehri Garhwal or send us a message for partnerships and volunteering." />
+                <link rel="canonical" href="https://www.changefoundation.in/contact" />
+            </Helmet>
             <div className="text-center mb-16">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -105,6 +124,12 @@ const Contact = () => {
                     {submitStatus === 'success' && (
                         <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center">
                             <span className="mr-2">✓</span> Message sent successfully! We'll get back to you soon.
+                        </div>
+                    )}
+
+                    {submitStatus === 'error' && (
+                        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center">
+                            <span className="mr-2">✕</span> Failed to send message. Please try again.
                         </div>
                     )}
 

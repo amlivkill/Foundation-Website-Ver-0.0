@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { ArrowRight, Leaf, Cpu, Users, Target, Mountain, Droplets, Shield, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -75,13 +76,44 @@ const Home = () => {
     const [email, setEmail] = useState('')
     const [subscribed, setSubscribed] = useState(false)
 
-    const handleSubscribe = (e) => {
+    // Fetch API status on mount to verify backend connection
+    useEffect(() => {
+        const checkApiStatus = async () => {
+            try {
+                const response = await fetch('/api/status')
+                const data = await response.json()
+                console.log('API Status:', data)
+            } catch (error) {
+                console.error('Failed to fetch API status:', error)
+            }
+        }
+        checkApiStatus()
+    }, [])
+
+    const handleSubscribe = async (e) => {
         e.preventDefault()
         if (email) {
-            console.log('Subscribed:', email)
-            setSubscribed(true)
-            setTimeout(() => setSubscribed(false), 3000)
-            setEmail('')
+            try {
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                })
+
+                if (response.ok) {
+                    const data = await response.json()
+                    console.log('Subscription successful:', data)
+                    setSubscribed(true)
+                    setTimeout(() => setSubscribed(false), 3000)
+                    setEmail('')
+                } else {
+                    console.error('Subscription failed:', response.status, response.statusText)
+                }
+            } catch (error) {
+                console.error('Failed to subscribe:', error)
+            }
         }
     }
 
@@ -93,6 +125,11 @@ const Home = () => {
 
     return (
         <div className="min-h-screen">
+            <Helmet>
+                <title>CHANGE Foundation | Sustainable Himalayan Development</title>
+                <meta name="description" content="Empowering Uttarakhand through climate-resilient agriculture, digital innovation, and rural livelihood models. Join the Himalayan Impact Initiative." />
+                <link rel="canonical" href="https://www.changefoundation.in/" />
+            </Helmet>
             {/* Hero Section */}
             <section
                 className="relative min-h-[90vh] flex items-center justify-center bg-gray-900 text-white overflow-hidden"

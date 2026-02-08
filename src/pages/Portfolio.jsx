@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Sprout, Mountain, Droplets } from 'lucide-react';
 
 const projects = [
@@ -28,6 +29,11 @@ const projects = [
 const Portfolio = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <Helmet>
+                <title>Our Work & Initiatives | CHANGE Foundation</title>
+                <meta name="description" content="Explore our impactful projects in organic farming, water conservation, and biodiversity preservation across Tehri Garhwal and Uttarakhand." />
+                <link rel="canonical" href="https://www.changefoundation.in/portfolio" />
+            </Helmet>
             <div className="text-center mb-16">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Initiatives</h1>
                 <p className="text-lg text-gray-600">Driving impact through targeted interventions.</p>
@@ -45,8 +51,8 @@ const Portfolio = () => {
                                     {project.category}
                                 </span>
                                 <span className={`text-xs font-medium px-2 py-1 rounded-full ${project.status === 'Ongoing' ? 'bg-blue-100 text-blue-700' :
-                                        project.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                                            'bg-yellow-100 text-yellow-700'
+                                    project.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                                        'bg-yellow-100 text-yellow-700'
                                     }`}>
                                     {project.status}
                                 </span>

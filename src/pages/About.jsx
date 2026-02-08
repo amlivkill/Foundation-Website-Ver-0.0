@@ -1,10 +1,16 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Building, MapPin, FileText, Calendar } from 'lucide-react';
 import { legalData } from '../lib/constants';
 
 const About = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <Helmet>
+                <title>About Us | CHANGE Foundation</title>
+                <meta name="description" content="Learn about CHANGE Foundation, a Section 8 Non-Profit driving sustainable development in the Himalayas. View our legal status, mission, and registered credentials." />
+                <link rel="canonical" href="https://www.changefoundation.in/about" />
+            </Helmet>
             <div className="mb-12 text-center">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">About the Foundation</h1>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">

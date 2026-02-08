@@ -19,3 +19,6 @@ cmd command -1  npm install  press **Enter**.  install all the dependencies
  using `npm run dev` start the development server
 
 3. **VS Code**: Press `Ctrl + ~` (tilde) to open the terminal inside the editor.
+
+
+By change_techLabs - 28 jan 2026
