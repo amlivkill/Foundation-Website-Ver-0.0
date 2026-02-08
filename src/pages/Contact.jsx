@@ -27,6 +27,13 @@ const Contact = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
 
+        if (!supabase) {
+            console.error('Supabase client not initialized. Check .env configuration.');
+            setSubmitStatus('error');
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             const { error } = await supabase
                 .from('contacts')

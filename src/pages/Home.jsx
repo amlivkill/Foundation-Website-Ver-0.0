@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { ArrowRight, Leaf, Cpu, Users, Target, Mountain, Droplets, Shield, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 
 const homeData = {
     "hero": {
@@ -75,45 +76,39 @@ const homeData = {
 const Home = () => {
     const [email, setEmail] = useState('')
     const [subscribed, setSubscribed] = useState(false)
-
-    // Fetch API status on mount to verify backend connection
-    useEffect(() => {
-        const checkApiStatus = async () => {
-            try {
-                const response = await fetch('/api/status')
-                const data = await response.json()
-                console.log('API Status:', data)
-            } catch (error) {
-                console.error('Failed to fetch API status:', error)
-            }
-        }
-        checkApiStatus()
-    }, [])
+    const [error, setError] = useState(false)
 
     const handleSubscribe = async (e) => {
         e.preventDefault()
-        if (email) {
-            try {
-                const response = await fetch('/api/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email }),
-                })
+        setError(false)
 
-                if (response.ok) {
-                    const data = await response.json()
-                    console.log('Subscription successful:', data)
+        if (!email || !supabase) return
+
+        try {
+            const { error: insertError } = await supabase
+                .from('newsletter_subscribers')
+                .insert([{ email }])
+
+            if (insertError) {
+                // Handle duplicate email (unique constraint violation)
+                if (insertError.code === '23505') {
                     setSubscribed(true)
-                    setTimeout(() => setSubscribed(false), 3000)
                     setEmail('')
+                    setTimeout(() => setSubscribed(false), 3000)
                 } else {
-                    console.error('Subscription failed:', response.status, response.statusText)
+                    console.error('Subscribe error:', insertError)
+                    setError(true)
+                    setTimeout(() => setError(false), 3000)
                 }
-            } catch (error) {
-                console.error('Failed to subscribe:', error)
+            } else {
+                setSubscribed(true)
+                setEmail('')
+                setTimeout(() => setSubscribed(false), 3000)
             }
+        } catch (err) {
+            console.error('Subscribe failed:', err)
+            setError(true)
+            setTimeout(() => setError(false), 3000)
         }
     }
 
@@ -370,9 +365,9 @@ const Home = () => {
                             />
                             <button
                                 type="submit"
-                                className="bg-white text-green-900 hover:bg-gray-100 font-semibold px-6 py-3 rounded-lg transition-all"
+                                className={`font-semibold px-6 py-3 rounded-lg transition-all ${error ? 'bg-red-500 text-white' : 'bg-white text-green-900 hover:bg-gray-100'}`}
                             >
-                                {subscribed ? 'Subscribed!' : 'Subscribe'}
+                                {error ? 'Error!' : subscribed ? 'Subscribed!' : 'Subscribe'}
                             </button>
                         </form>
 
