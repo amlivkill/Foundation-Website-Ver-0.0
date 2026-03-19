@@ -4,6 +4,11 @@ import { ArrowRight, Leaf, Cpu, Users, Target, Mountain, Droplets, Shield, Mail 
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
+import imgTurmeric from '../assets/images/turmeric-sorting.jpg'
+import imgSolarDryer from '../assets/images/solar-dryer.jpg'
+import imgOrangeHalf from '../assets/images/orange-half.jpg'
+import imgDryOrange from '../assets/images/dry-orange.jpg'
+
 const homeData = {
     "hero": {
         "title": "Empowering the Himalayas Through Innovation and Resilience",
@@ -60,6 +65,26 @@ const homeData = {
             "url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
             "caption": "Terraced farming enhanced by precision irrigation technologies.",
             "category": "Agriculture"
+        },
+        {
+            "url": imgTurmeric,
+            "caption": "Local women self-help groups sorting freshly harvested organic turmeric.",
+            "category": "Livelihood"
+        },
+        {
+            "url": imgSolarDryer,
+            "caption": "Eco-friendly solar dehydrators used for processing local herbs and spices.",
+            "category": "Technology"
+        },
+        {
+            "url": imgOrangeHalf,
+            "caption": "Freshly harvested Himalayan oranges ready for value-added processing.",
+            "category": "Agriculture"
+        },
+        {
+            "url": imgDryOrange,
+            "caption": "Zero-waste dehydrated orange slices packaged for sustainable markets.",
+            "category": "Value Addition"
         }
     ],
     "newsletter": {
