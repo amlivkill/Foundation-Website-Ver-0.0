@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { navigationLinks, legalData } from '../lib/constants';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
-
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
@@ -15,10 +14,11 @@ const Header = () => {
                 <div className="flex justify-between h-16">
                     <div className="flex items-center">
                         <Link to="/" className="flex items-center space-x-2">
-                            <Globe className="h-8 w-8 text-primary-500" />
-                            <span className="text-xl font-bold text-gray-900 tracking-tight">
-                                {legalData.brandName} <span className="text-primary-600">Foundation</span>
-                            </span>
+                            <img
+                                src="/Foundation-Website-Ver-0.0/images/foundation-logo.png"
+                                alt="CHANGE Foundation Logo"
+                                className="h-10 w-auto"
+                            />
                         </Link>
                     </div>
 
@@ -36,6 +36,14 @@ const Header = () => {
                                 {link.name}
                             </Link>
                         ))}
+                        <a
+                            href="https://change-techlab.onrender.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors duration-200"
+                        >
+                            ⚙️ TechLab
+                        </a>
                         <Link
                             to="/about"
                             className="bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
@@ -73,6 +81,15 @@ const Header = () => {
                                 {link.name}
                             </Link>
                         ))}
+                        <a
+                            href="https://change-techlab.onrender.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-primary-600 hover:bg-gray-50"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            ⚙️ TechLab
+                        </a>
                     </div>
                 </div>
             )}
